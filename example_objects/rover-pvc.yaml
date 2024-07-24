@@ -1,0 +1,11 @@
+# PVC is scoped to namespace/project
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: rover-logdata-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Mi

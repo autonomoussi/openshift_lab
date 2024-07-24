@@ -1,0 +1,12 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: rover-route
+  labels:
+    app: rover-ep
+spec:
+  to:
+    kind: Service
+    name: rover-service # specify rover service name here
+  tls:
+    termination: edge

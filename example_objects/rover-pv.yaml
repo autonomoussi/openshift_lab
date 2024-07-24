@@ -1,0 +1,13 @@
+# PVs should be created by admin or cluster admin atleast.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: rover-logdata-pv
+spec:
+  capacity:
+    storage: 2Mi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  # hostPath:
+  #   path: /somepath/within/Openshift node

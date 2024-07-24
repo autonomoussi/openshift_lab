@@ -1,0 +1,44 @@
+# Create Deployment using the rover Service Account and use PVC
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: rover-ep
+  name: rover-ep
+spec:
+  selector:
+    matchLabels:
+      app: rover-ep
+  template:
+    metadata:
+      labels:
+        name: rover-ep
+        app: rover-ep
+    spec:
+      serviceAccountName: rover-sa
+      containers:
+      - name: rover-uid-demo-container
+        image: default-route-openshift-image-registry.apps-crc.testing/rover-project/rover-micro:1.0.6
+        imagePullPolicy: IfNotPresent
+        # volumeMounts:
+        # - mountPath: /home/rover/logdata
+        #   name: logdata-vol
+        env:
+        - name: ROVER_ACCESS_KEY_ID
+          value: <KEY>
+        - name: ROVER_SECRET_ACCESS_KEY
+          value: <SECRET>
+        - name: ENABLE_HTTP
+          value: "true"
+        ports:
+        - containerPort: 7180
+          protocal: TCP
+        - containerPort: 8000
+          protocol: TCP
+        securityContext:
+          runAsUser: 1002
+          runAsGroup: 1000
+      # volumes:
+      # - name: logdata-vol # arbitrary names need not match PV but shoud match name in volumemounts section
+      #   persistentVolumeClaim:
+      #     claimName: rover-logdata-pvc # should match existing PVC and are tied to namespace

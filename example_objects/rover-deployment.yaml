@@ -1,0 +1,39 @@
+# Create Deployment using the rover Service Account
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rover-uid-demo 
+spec:
+  selector:
+    matchLabels:
+      app: rover-demo
+  template:
+    metadata:
+      labels:
+        app: rover-demo
+    spec:
+      serviceAccountName: rover-sa # Service Acc Name
+      containers:
+      - name: rover-uid-demo-container
+        image: default-route-openshift-image-registry.apps-crc.testing/rover-project/rover-micro:1.0.6
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: ROVER_ACCESS_KEY_ID
+          value: <KEY_GOES_HERE>
+        - name: ROVER_SECRET_ACCESS_KEY
+          value: <SECRET_GOES_HERE>
+        ports:
+        - containerPort: 7180
+          protocal: TCP
+        # resources:
+        #   requests:
+        #     memory: "1Gi"
+        #     cpu: "1"
+        #     #ephemeral-storage: "2Gi"
+        #   limits:
+        #     memory: "2Gi"
+        #     cpu: "2"
+        #     #ephemeral-storage: "3Gi"
+        securityContext:
+          runAsUser: 1002
+          runAsGroup: 1000
